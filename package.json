@@ -1,0 +1,12 @@
+{
+  "name": "socket.io-chat",
+  "version": "0.0.0",
+  "description": "A new way to work html",
+  "main": "index.js",
+  "author": "Fabz",
+  "private": true,
+  "license": "Fabz",
+  "dependencies": {
+    "express": "3.4.8"
+  }
+}
