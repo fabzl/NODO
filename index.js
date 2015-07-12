@@ -1,79 +1,67 @@
-// Setup basic express server
-var express = require('express');
+/**
+ * Declare our Module dependencies at the top
+ */
+var express = require('express'),	//express - application framework for node
+ 	fs = require('fs'),			//fs - filesystem library
+	http = require('http'),		//http - give me server
+	_ = require('underscore'),		//underscore - some extra JS sugar
+	path = require('path');		//http://nodejs.org/docs/v0.4.9/api/path.html
+
+
+/**
+ * Index.js
+ * The main application entry file.
+ * Please note that the order of loading is important!
+ */
+
+var env = process.env.NODE_ENV || 'local',		//get the environemnt var or set as development
+	config = require('./core/config')[env];	//get config based on the specifed environment
+
+
+// log out the environment variable to the terminal
+console.log('ENVIRONMENT = ' + env);
+
+
+//  ================================
+//  === EXPRESS SETUP AND CONFIG ===
+//  ================================
+
+//Create an express app
 var app = express();
-var server = require('http').createServer(app);
-var io = require('../..')(server);
-var port = process.env.PORT || 3000;
 
-server.listen(port, function () {
-  console.log('Server listening at port %d', port);
+// express settings
+require('./core/express')(app, config);
+
+// Bootstrap routes
+require('./core/routes')(app);
+
+
+
+//Create the HTTP server with the express app as an argument
+var server = http.createServer(app);
+
+//Create the server
+server.listen(app.get('port'), function(){
+	console.log('app.js: Express server listening on port ' + app.get('port'));
+});
+server.on('close', function(socket) {
+	console.log('app.js: Server has closed');
 });
 
-// Routing
-app.use(express.static(__dirname + '/public'));
 
-// Chatroom
+//  ================================
+//  === WRITING JSON MODULE   ======
+//  ================================
 
-// usernames which are currently connected to the chat
-var usernames = {};
-var numUsers = 0;
-
-io.on('connection', function (socket) {
-  var addedUser = false;
-
-  // when the client emits 'new message', this listens and executes
-  socket.on('new message', function (data) {
-    // we tell the client to execute 'new message'
-    socket.broadcast.emit('new message', {
-      username: socket.username,
-      message: data
-    });
-  });
-
-  // when the client emits 'add user', this listens and executes
-  socket.on('add user', function (username) {
-    // we store the username in the socket session for this client
-    socket.username = username;
-    // add the client's username to the global list
-    usernames[username] = username;
-    ++numUsers;
-    addedUser = true;
-    socket.emit('login', {
-      numUsers: numUsers
-    });
-    // echo globally (all clients) that a person has connected
-    socket.broadcast.emit('user joined', {
-      username: socket.username,
-      numUsers: numUsers
-    });
-  });
-
-  // when the client emits 'typing', we broadcast it to others
-  socket.on('typing', function () {
-    socket.broadcast.emit('typing', {
-      username: socket.username
-    });
-  });
-
-  // when the client emits 'stop typing', we broadcast it to others
-  socket.on('stop typing', function () {
-    socket.broadcast.emit('stop typing', {
-      username: socket.username
-    });
-  });
-
-  // when the user disconnects.. perform this
-  socket.on('disconnect', function () {
-    // remove the username from global usernames list
-    if (addedUser) {
-      delete usernames[socket.username];
-      --numUsers;
-
-      // echo globally that this client has left
-      socket.broadcast.emit('user left', {
-        username: socket.username,
-        numUsers: numUsers
-      });
-    }
-  });
+fs.writeFile('public/helloworld.txt', 'Hello World!', function (err) {
+  if (err) return console.log(err);
+  console.log('Hello World > helloworld.txt');
 });
+
+
+
+
+
+// expose app as the scope
+exports = module.exports = app;
+

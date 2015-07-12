@@ -1,28 +1,43 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+
+<html lang="en" ng-app="NODO">
 <head>
-  <meta charset="UTF-8">
-  <title>Socket.IO Chat Example</title>
-  <link rel="stylesheet" href="style.css">
+	<meta charset="UTF-8">
+	<title>NODO</title>
+	
+	<script src="lib/jquery/jquery-1.11.3.js"></script>
+	<script src="lib/angular/angular.js"></script>
+	<script src="js/controllers.js"></script>
+
+	<link rel="stylesheet" type="text/css" href="css/nodo.css">
+
 </head>
 <body>
-  <ul class="pages">
-    <li class="chat page">
-      <div class="chatArea">
-        <ul class="messages"></ul>
-      </div>
-      <input class="inputMessage" placeholder="Type here..."/>
-    </li>
-    <li class="login page">
-      <div class="form">
-        <h3 class="title">What's your nickname?</h3>
-        <input class="usernameInput" type="text" maxlength="14" />
-      </div>
-    </li>
-  </ul>
 
-  <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
-  <script src="/socket.io/socket.io.js"></script>
-  <script src="/main.js"></script>
+
+
+		<div class="main-container" ng-controller = "Controller" >
+
+			<div class="title-container" ng-controller = "Title" >
+
+			<a  ng-init="checked=false" class="core title" ng-dblclick="editAndRename()" > <h1  ng-init="name='NODO'" ><span class="nodoBull" ng-click="displayConfig()" >&bull;</span>{{name}} </h1><input  class="editor-text" type="text" ng-model="name" ng-show="checked" ng-model="checked"><button  class="editor-btn" ng-show="checked" ng-model="checked" value=ok ng-click="editAndRename()">ok</button>
+			</a>
+
+			</div>
+
+			<div class="navigation-container" ng-controller = "Navigation"> 
+
+				<a class="core navigation" ng-dblclick="edit()" ng-click="navigate()" ng-repeat="navigation in core.navigation">{{navigation}} <input class="editor-text" type="text"  ng-keyup="keyUp(event=$event)" ng-show="checked" ng-model="navigation" ng-model="checked" ></input><button class="editor-btn" ng-show="checked" ng-model="checked" value=ok ng-click="edit()">ok</button></a>
+			</div>
+				</br>
+				<a ng-init="checked=false" ng-dblclick="edit()" class="core content" ng-model="element" ng-repeat="element in core.content">
+				{{element}}<input class="editor-text" type="text"  ng-keyup="keyUp(event=$event)" ng-show="checked" ng-model="element" ng-model="checked" ></input><button class="editor-btn" ng-show="checked" ng-model="checked" value=ok ng-click="edit()">ok</button></br></a>
+
+				<a class="core config" ng-repeat="config in core.config">{{config}}</a>
+				</br>
+				<button ng-click="focus()">RESET</button>
+		</div>
+		
+		
 </body>
-</html>
+	
