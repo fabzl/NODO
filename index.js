@@ -59,6 +59,14 @@ fs.writeFile('public/helloworld.txt', 'Hello World!', function (err) {
 });
 
 
+var jsonfile = require('jsonfile')
+var util = require('util')
+ 
+var file = '/tmp/data.json'
+jsonfile.readFile(file, function(err, obj) {
+  console.dir(obj)
+})
+
 
 
 

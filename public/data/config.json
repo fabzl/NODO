@@ -1,0 +1,53 @@
+[{	
+
+	"author" : {
+		"type"	:"Author",
+		"name" : "Fabian Andrade",
+		"title" : "Main Dev & Author",
+		"company" : "Fabz&co"
+	},
+
+	"metadata" : {
+		"menuitem01": "home",
+		"menuitem02": "about",
+		"menuitem03": "contact"
+	},
+
+
+	"config" : { 
+
+		"typography" : {
+			"type" : "Typography",
+			"font" : "Arial"
+		},
+
+		"styles" : {
+			"size" : "12px"
+		} 
+	},
+
+	"grid" : {
+
+		"columns" : { 
+			"columns": "50%"
+		},
+
+		"rows" : { 
+			"row1": "50%"
+		},
+
+		"viewports" : { 
+			"viewportMark": "desktop",
+			"viewportMark": "tablet",
+			"viewportMark": "mobile"
+		}
+
+	},
+	"content" : { 
+		"element01": "<h1> Main Title</h1>",
+		"element02": "<p>Lorem Ipsum</p>",
+		"element03": "<btn>click me bb one more time</btn>"
+	}
+
+
+}]
